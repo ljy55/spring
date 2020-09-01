@@ -44,8 +44,11 @@ public class ImageListServlet extends HttpServlet {
     	  String fileMime = application.getMimeType(file);
          options.append(String.format(pattern,fileMime, file));
       }
+      String url = req.getContextPath();
       Map<String, Object> attributeMap = new LinkedHashMap<>();
       attributeMap.put("options", options);
+      attributeMap.put("imgUrl", url);
+      attributeMap.put("videoUrl", url);
       String tmplPath = "/kr/or/ddit/servlet02/fileList.tmpl";
       String html = TemplateUtils.readAndReplace(tmplPath, attributeMap);
       
