@@ -14,16 +14,16 @@
 	
 	$(function(){
 		var divs = $("div");
-		console.log(divs);
-		console.log(divs[0]);
-		console.log(divs.get(0));
-		console.log(divs.html());
-		console.log(divs[0].innerHTML);
+		//console.log(divs);
+		//console.log(divs[0]);
+		//console.log(divs.get(0));
+		//console.log(divs.html());
+		//console.log(divs[0].innerHTML);
 		$("#div1").test({
 			backgroundColor:"red",
 			temp:function(){
 				alert(temp);
-			};
+			}
 			});
 	});
 // 	$(document).ready(function(){
@@ -41,5 +41,16 @@
 	DIV2
 	<div id="div3">DIV3</div>
 </div>
+<script type="text/javascript">
+	var object1 = {
+			prop1 : "value1",
+			prop2 : "value2"
+	};
+	var object2 = {};
+	object2.prop1="value1";
+	object2['prop2']="value2"; // 연관배열, 연상배열 구조
+	//javascript 객체를 JSON 으로 변환 : marshalling , JSON.stringify
+	//JSON을 javascript 객체로 변환 : unmarshalling, JSON.parse
+</script>
 </body>
 </html>

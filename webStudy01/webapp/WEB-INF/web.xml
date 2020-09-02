@@ -32,6 +32,18 @@
       <servlet-name>ImageListServlet</servlet-name>
       <url-pattern>/image/imageList.do</url-pattern>
    </servlet-mapping>
+   <error-page>  		
+   		<exception-type>kr.or.ddit.exception.CustomException</exception-type>
+   		<location>/error/errorProcess.jsp</location>
+   </error-page>
+   <error-page>
+   		<error-code>500</error-code>
+   		<location>/error/error500.jsp</location>
+   </error-page>
+   <error-page>
+   		<error-code>400</error-code>
+   		<location>/error/error400.jsp</location>
+   </error-page>
 </web-app>
 
 

@@ -29,14 +29,40 @@
 </div>
 
 <script type="text/javascript" src="../js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="../js/calForm.js"></script>
 <script type="text/javascript">
 	var resultArea = $("#resultArea")
-	$("#calForm").convertForm(function(resp){
-				resultArea.html(resp);
-				//console.log(resp);
-			});
-//	$("#testForm").convertForm("#resultArea");
+	$("#calForm").on("submit", function(event){
+		event.preventDefault();
+		// 동기요청을 비동기로 전환.
+		let url = this.action? this.action : ""; //이때의 this는 form
+		let data = {};
+		let inputs = $(this).find(":input");
+		$.each(inputs, function(index, input){
+			let nameAttr = input.name;
+			if(nameAttr){
+				let valueAttr = input.value;
+				//data.op=8;
+				data[nameAttr] = valueAttr;
+			}
+		});
+		//console.log(data);
+		let method = this.method ? this.method : "get";
+		
+		$.ajax({
+			url : url,
+			data : data,
+			method : method,
+			dataType : "xml", //1. html, text, json, xml
+			success : function(resp) {
+				//resultArea.html(resp.expression);
+				let tmp = $(resp).find("expression");
+				resultArea.html(tmp.html());
+				//console.log(tmp.html());
+			},
+			error : function(errResp) {
+			}
+		});
+	});
 </script>
 </body>
 </html>
