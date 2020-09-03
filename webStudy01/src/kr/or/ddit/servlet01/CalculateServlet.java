@@ -95,7 +95,7 @@ public class CalculateServlet extends HttpServlet {
 		public String marshalling(Map<String, Object> targetMap);
 	}
 	
-	private static enum MarshallingType{
+	public static enum MarshallingType{
 		JSON("application/json;charset=UTF-8",new Marshaller(){
 
 			@Override
