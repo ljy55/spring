@@ -23,7 +23,9 @@ public class ImageListServlet extends HttpServlet {
    @Override
    public void init(ServletConfig config) throws ServletException {
       super.init(config);
-      String contentsPath = config.getInitParameter("contentsPath");
+      System.out.println(getServletContext().hashCode());
+//    String contentsPath = config.getInitParameter("contentsPath");
+      String contentsPath = getServletContext().getInitParameter("contentsPath");
       folder = new File(contentsPath);
       
       application = getServletContext();

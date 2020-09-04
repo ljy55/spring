@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -18,11 +19,15 @@ import javax.servlet.http.HttpServletResponse;
 			initParams = { @WebInitParam(name = "contentsPath", value = "e:/contents") })
 public class ImageStreamServlet extends HttpServlet{
    private File folder;
+   private ServletContext application;
    
    @Override
    public void init(ServletConfig config) throws ServletException {
       super.init(config);
-      String contentsPath = config.getInitParameter("contentsPath");
+      System.out.println(getServletContext().hashCode());
+      application = getServletContext();
+//    String contentsPath = config.getInitParameter("contentsPath");
+      String contentsPath  = application.getInitParameter("contentsPath");
       folder = new File(contentsPath);
    }
    
