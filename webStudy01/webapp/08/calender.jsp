@@ -50,9 +50,9 @@
 	cal.add(MONTH, -1); // 현재 캘린더는 19년도 12월 1일로 됨
 	int beforeYear = cal.get(YEAR); // 2019
 	int beforeMonth = cal.get(MONTH); // 전달 월 (12)
-	cal.add(MONTH, 2); // 현재 캘린더는 20년도 2월 1일로 됨
+	cal.add(MONTH, 2); // 현재 캘린더는 20년도 9월이 됨
 	int nextYear = cal.get(YEAR); // 2020
-	int nextMonth = cal.get(MONTH); // 다음달 월 (2)
+	int nextMonth = cal.get(MONTH);
 	
 	//Locale locale = Locale.CANADA_FRENCH;
 	Locale locale = request.getLocale();
@@ -70,13 +70,6 @@
 <!-- 3. 임의의 년도와 월의 달력 처리 -->
 <!-- 4. 제공한 언어의 목록 중 선택한 Locale 이용한 언어별 달력 처리 -->
 <!-- 5. 제공한 TimeZone 목록 중 선택한 TimeZone을 이용하여 오늘 날짜에 대한 식별 처리 -->
-<h4>
-<a href="#" onclick="clickHandler(<%=beforeYear%>, <%=beforeMonth%>);">이전달</a>
-==========
-<%=year%>년 <%=month+1%>월
-==========
-<a href="#" onclick="clickHandler(<%=nextYear%>, <%=nextMonth%>);">다음달</a>
-</h4>
 <form name="calendarForm">
 	<input type="number" name="year" value="<%=year%>"/>년
 	<select name="month">

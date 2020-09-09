@@ -5,24 +5,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>index.jsp</title>
+<title>Insert title here</title>
 </head>
 <body>
-<h1>Welcome Page</h1>
+<h4>웰컴 페이지(<%=session.getId() %>)</h4>
 <%
-	String authId = (String)request.getAttribute("authId");
+	String authId = (String)session.getAttribute("authId");
 	if(StringUtils.isNotBlank(authId)){
 		%>
 		<form name="logoutForm" action="<%=request.getContextPath() %>/login/logout.do" method="post"></form>
-		현재 로그인 유저 : <%=session.getAttribute("authId")%> <a href="#" onclick="document.logoutForm.submit">로그아웃</a> 
-		<%		
+		현재 로그인 유저 : <%=authId %> <a href="#" onclick="document.logoutForm.submit();">로그아웃</a>
+		<%
 	}else{
 		%>
-		<a href="<%=request.getContextPath()%>/login/loginForm.jsp">로그인하기</a>
+		<a href="<%=request.getContextPath() %>/login/loginForm.jsp">로그인하기</a>
 		<%
-		
 	}
 %>
-
 </body>
 </html>

@@ -55,6 +55,12 @@
 <!--    		<error-code>400</error-code> -->
 <!--    		<location>/error/error400.jsp</location> -->
 <!--    </error-page> -->
+<!-- 	<jsp-config> -->
+<!-- 		<jsp-property-group> -->
+<!-- 			<url-pattern>/09/*</url-pattern> -->
+<!-- 			<include-prelude>/03/standard.jsp</include-prelude> -->
+<!-- 		</jsp-property-group> -->
+<!-- 	</jsp-config> 가능하면 쓰지말것 -->
 </web-app>
 
 
