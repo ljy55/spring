@@ -1,47 +1,77 @@
+<%@page import="kr.or.ddit.Contants"%>
+<%@page import="java.net.URLDecoder"%>
 <%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script type="text/javascript">
-	$(function(){
-		var imgPtrn = "<img src = 'image.do?image=%S'/>";
-		var videoPtrn = "<video src = 'image.do?image=%S'/>";
-		var resultArea = $("#resultArea");
-		$("select").on("change", function(){
-			let value = $(this).val();
-			let option = $(this).find("option:selected");
-			//$(option).attr("value");
-			//option[0].value
-			let clzName = $(option).attr("class");
-			let innerTag = null;
-			if(clzName.startsWith("image")){
-				//let imgTag = imgPtrn.replace("%S", value);
-				//resultArea.html(imgTag);
-				innerTag = imgPtrn.replace("%S", value);
-			}else if(clzName.startsWith("video")){
-				//let videoTag = videoPtrn.replace("%S", value);
-				//resultArea.html(videoTag);
-				innerTag = videoPtrn.replace("%S", value);
-			}
-			if(innerTag){
-				resultArea.html(innerTag);
-			}
-			
-		});
-	});
-</script>
-	<select>
-		<option>파일선택</option>
-		<%
-			String[] listFiles = (String[])request.getAttribute("listFiles");
-			for(String file : listFiles){
-				String mime = application.getMimeType(file);
-				String clz = StringUtils.startsWith(mime, "image/")?"image":StringUtils.startsWith(mime, "video")?"viedo":"none";
-				%>
-				<option class="<%=clz%>"><%=file %></option>
-				<%
-			}
-		%>
-	</select>
-	<div id="resultArea">
-	
-	</div>
+    
+<%
+   String jsonImageNames =  (String) request.getAttribute(Contants.IMAGESTREAMINCOOKIENAME);
+   
+%>    
+   <script type="text/javascript">
+      $(function(){
+         var imageRendering = function(option, value){
+            let fileClass = $(option).attr("class");
+            if(fileClass.startsWith("image")){
+               innerTag = imgPtrn.replace("%s", value);
+            }else if(fileClass.startsWith("video")){
+               innerTag = videoPtrn.replace("%s", value);
+            }
+            if(innerTag){
+               resultArea.append(innerTag);
+            }
+         }
+         var imgPtrn = "<img src= 'image.do?image=%s' />";
+         var videoPtrn = "<video src = 'image.do?image=%s />'";
+         var resultArea = $("#resultArea");
+         
+         let innerTag = null;
+         
+         var  select = $("select").on("change", function(){
+//             let array = $(this).val();
+//             console.log(array);
+            let options = $(this).find("option:selected");
+            console.log(options);
+            resultArea.empty();
+            
+            $(options).each(function(idx, option){
+               let value = $(this).text();
+               setTimeout(function(){
+                  imageRendering(option, value);
+               }, 600);
+            });
+            //console.log("option"+option);
+            //console.log("fileClass"+fileClass);
+            
+            
+         });
+         
+         <%
+            if(StringUtils.isNotBlank(jsonImageNames)){
+               %>
+                  let json = '<%=jsonImageNames%>';
+                  let objs = JSON.parse(json);
+                  console.log(objs);
+                  select.val(objs);
+                  select.trigger("change");
+               <%
+            }
+         %>
+      });
+   </script>
+      <select multiple size = "10">
+         <option>파일선택</option>
+         <%
+            
+            String[] listFiles = (String[]) request.getAttribute("listFiles");
+            for(String file : listFiles){
+               String mime = application.getMimeType(file);
+               String clz = StringUtils.startsWith(mime, "image/") ? "image"  : StringUtils.startsWith(mime, "video/")? "video" : "none";
+               %>
+                  <option class = "<%=clz%>" ><%=file %></option>
+               <%
+            }
+         %>
+      </select>
+      <div id = "resultArea">
+      </div>

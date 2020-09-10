@@ -5,6 +5,9 @@
    version="3.1">
    
    <display-name>webStudy01</display-name>
+   <welcome-file-list>
+   	<welcome-file>index.do</welcome-file>
+   </welcome-file-list>
    <context-param>
    	<param-name>testParam</param-name>
    	<param-value>pramVlaue</param-value>
