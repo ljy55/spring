@@ -36,7 +36,6 @@
 		UPDATE MEMBER
 		SET
 			mem_name         = #{mem_name}
-			mem_bir          = TO_DATE(#{mem_bir,jdbcType=DATE}, 'YYYY-MM-DD')
 			mem_zip          = #{mem_zip}
 			mem_add1         = #{mem_add1}
 			mem_add2         = #{mem_add2}
