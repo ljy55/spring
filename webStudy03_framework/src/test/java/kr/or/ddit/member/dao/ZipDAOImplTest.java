@@ -21,7 +21,7 @@ public class ZipDAOImplTest {
 
 	@Test
 	public void testSearchZip() {
-		List<ZipCodeVO> zipList = dao.selectZipcodeList("대흥동");
+		List<ZipCodeVO> zipList = dao.selectZipcodeList(pagingVO);
 		assertNotNull(zipList);
 		assertNotEquals(0, zipList.size());
 		System.out.println(zipList);

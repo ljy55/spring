@@ -9,7 +9,7 @@
 <jsp:include page="/includee/preScript.jsp" />
 <script type="text/javascript">
 	$(function(){
-		modifyBtn.on("click", function(){
+		$("#modifyBtn").on("click", function(){
 			var answer = confirm("수정하시겠습니까?");
 			if(answer==true){
 				location.href="<%=request.getContextPath()%>/myDataUpdate.do";
