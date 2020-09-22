@@ -1,13 +1,38 @@
 package kr.or.ddit.prod.service;
 
 
+import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.prod.dao.IProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
 import kr.or.ddit.vo.ProdVO;
 
 public class ProdServiceImpl implements IProdService {
-	private IProdDAO dao = ProdDAOImpl.getInstance(); 
+	private IProdDAO dao = ProdDAOImpl.getInstance();
+	
+	private static ProdServiceImpl self;
+	
+	public ProdServiceImpl() {
+		super();
+	}
+
+	public static ProdServiceImpl getInstance() {
+		if(self==null) self = new ProdServiceImpl();
+		return self;
+	}
+	
+	@Override
+	public ServiceResult createProd(ProdVO prod) {
+		ServiceResult result = null;
+		int rowcnt;
+		rowcnt = dao.insertProd(prod);
+		if(rowcnt>0) {
+			result = ServiceResult.OK;
+		}else {
+			result = ServiceResult.FAILED;
+		}
+		return result;
+	}
 	
 	@Override
 	public ProdVO retrieveProd(String prod_id) {

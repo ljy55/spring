@@ -22,6 +22,17 @@ public class ProdDAOImpl implements IProdDAO {
 	private SqlSessionFactory sqlSessionFactory = CustomSqlSessionFactoryBuilder.getSqlSessionFactory();
 	
 	@Override
+	public int insertProd(ProdVO prod) {
+		try(
+			SqlSession session = sqlSessionFactory.openSession(true);
+		){
+			IProdDAO mapper = session.getMapper(IProdDAO.class);
+			return mapper.insertProd(prod);
+		}
+		
+	}
+	
+	@Override
 	public ProdVO selectProd(String prod_id) {
 		try(
 			SqlSession session = sqlSessionFactory.openSession();	
