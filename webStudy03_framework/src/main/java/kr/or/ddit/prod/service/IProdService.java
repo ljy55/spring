@@ -39,4 +39,11 @@ public interface IProdService {
 	 * @return
 	 */
 	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO);
+	
+	/**
+	 * 상품 수정
+	 * @param prod
+	 * @return OK, FAILED
+	 */
+	public ServiceResult modifyProd(ProdVO prod);
 }

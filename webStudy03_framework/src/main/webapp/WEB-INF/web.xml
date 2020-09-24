@@ -13,8 +13,44 @@
 	</context-param>
 	<context-param>
 		<param-name>contentsPath</param-name>
-		<param-value>d:/contents</param-value>
+		<param-value>e:/contents</param-value>
 	</context-param>
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>kr.or.ddit.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>AuthenticationFilter</filter-name>
+		<filter-class>kr.or.ddit.filter.AuthenticationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthenticationFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>AuthorizationFilter</filter-name>
+		<filter-class>kr.or.ddit.filter.AuthorizationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthorizationFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>FileUploadCheckFilter</filter-name>
+		<filter-class>kr.or.ddit.filter.FileUploadCheckFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FileUploadCheckFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
 	<servlet>
 		<servlet-name>FrontController</servlet-name>
 		<servlet-class>kr.or.ddit.mvc.FrontController</servlet-class>
@@ -31,6 +67,7 @@
 			<param-value>.jsp</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<multipart-config></multipart-config>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>FrontController</servlet-name>

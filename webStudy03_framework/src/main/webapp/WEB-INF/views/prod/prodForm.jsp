@@ -130,7 +130,7 @@
 				<th>상품이미지경로</th>
 				<td>
 					<div class="form-group form-inline">
-						<input class="form-control mr-2" type="text" required name="prod_img"
+						<input class="form-control mr-2" type="file" required name="prod_image"
 							value="${prod.prod_img }" maxLength="40" />
 						<span class="error"><%=errors.get("prod_img") %></span>
 					</div>

@@ -11,7 +11,7 @@
 	#top{
 		width: 100%;
 		height: 70px;
-		background-color: blue;
+		background-color: pink;
 	}
 	#top ul{
 		list-style: none;
@@ -24,7 +24,7 @@
 	#left{
 		width: 20%;
 		height: 600px;
-		background-color: lime;
+		background-color: lightblue;
 		float: left;
 	}
 	#content{

@@ -16,9 +16,7 @@
 	<%
 		PagingVO<ProdVO> pagingVO = (PagingVO) request.getAttribute("pagingVO");
 	%>
-	<form id="searchForm"
-		action="<%=request.getContextPath()%>/prod/prodList.do"
-		class="form-inline">
+	<form id="searchForm" action="<%=request.getContextPath()%>/prod/prodList.do" class="form-inline">
 		<input type="hidden" name="page" /> 
 		<select class="form-control" name="prod_lgu">
 			<option value>상품분류</option>
@@ -64,7 +62,7 @@
 					for (ProdVO prod : datalist) {
 			%>
 			<tr>
-				<td><a href="#" data-what="<%=prod.getProd_id()%>"><%=prod.getProd_name()%></a></td>
+				<td><a href="<%=request.getContextPath() %>/prod/prodView.do?what=<%=prod.getProd_id() %>"><%=prod.getProd_name()%></a></td>
 				<td><%=prod.getLprod_nm()%></td>
 				<td><%=prod.getBuyer().getBuyer_name()%></td>
 				<td><%=prod.getProd_cost()%></td>
@@ -84,8 +82,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="6" id="pagingArea"><%=pagingVO.getPagingHTML_BS()%>
-				</td>
+				<td colspan="6" id="pagingArea"><%=pagingVO.getPagingHTML_BS()%></td>
 			</tr>
 		</tfoot>
 	</table>
@@ -101,16 +98,16 @@
 		return false;
 	});
 	
-	$("#prodTable>tbody").on("click","a", function(){
-		let what = $(this).data("what"); 
-		location.href="<%=request.getContextPath()%>/prod/prodView.do?what=" + what;
-	});
+// 	$("#prodTable>tbody").on("click","a", function(){
+// 		let what = $(this).data("what"); 
+<%-- 		location.href="<%=request.getContextPath()%>/prod/prodView.do?what=" + what; --%>
+// 	});
 	
 	searchForm.on("submit", function(event){
 		event.preventDefault();
 		let url = this.action?this.action:location.href;
 		let method = this.method?this.method:"get";
-		let data = $(this).serialize(); // query string 
+		let data = $(this).serialize(); // query string
 		$.ajax({
 			url : url,
 			method : method,
@@ -122,21 +119,23 @@
 				let list = resp.data;
 				let trTags = [];
 				if(list.length>0){
-					$(list).each(function(idx, member){
+					$(list).each(function(idx, prod){
 						trTags.push(
 							$("<tr>").append(
 								$("<td>").html(
-									($("<a>").text(prod.prod_name)
-													.attr("href", "#")
-													.data("what", prod.prod_id)
-									),
+									$("<a>").text(prod.prod_name)
+											.attr("href", "<%=request.getContextPath()%>/prod/prodView.do?what="+prod.prod_id)
+											.data("what", prod.prod_id)
+								),
 								$("<td>").text(prod.lprod_nm),
 								$("<td>").text(prod.buyer.buyer_name),
 								$("<td>").text(prod.prod_cost),
 								$("<td>").text(prod.prod_price),
 								$("<td>").text(prod.prod_sale)
+							
 							)
 						);
+						console.log(document.body);
 						
 					});
 				}else{

@@ -93,6 +93,8 @@ public class MemberVO implements Serializable {
 	private String mem_delete;
 	
 	private List<ProdVO> prodList; // Member has many Prod 관계(1:N 관계의 테이블 조인시 사용되는 모델)
+	
+	private String mem_role;
 }
 
 

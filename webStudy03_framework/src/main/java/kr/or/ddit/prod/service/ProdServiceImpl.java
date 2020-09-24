@@ -6,6 +6,7 @@ import kr.or.ddit.enumpkg.ServiceResult;
 import kr.or.ddit.exception.CustomException;
 import kr.or.ddit.prod.dao.IProdDAO;
 import kr.or.ddit.prod.dao.ProdDAOImpl;
+import kr.or.ddit.vo.MemberVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
 
@@ -39,5 +40,17 @@ public class ProdServiceImpl implements IProdService {
 	@Override
 	public List<ProdVO> retrieveProdList(PagingVO<ProdVO> pagingVO) {
 		return dao.selectProdList(pagingVO);
+	}
+
+	@Override
+	public ServiceResult modifyProd(ProdVO prod) {
+		int rowcnt = dao.updateProd(prod);
+		ServiceResult serviceResult = null;		
+		if(rowcnt>0) {
+			serviceResult = ServiceResult.OK;
+		}else {
+			serviceResult = ServiceResult.FAILED;
+		}		
+		return serviceResult;
 	}
 }

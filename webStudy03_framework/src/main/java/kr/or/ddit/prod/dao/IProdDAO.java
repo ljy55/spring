@@ -15,4 +15,6 @@ public interface IProdDAO {
 //	조건 : 분류, 거래처, 상품명
 	public int selectProdCount(PagingVO<ProdVO> pagingVO);
 	public List<ProdVO> selectProdList(PagingVO<ProdVO> pagingVO);
+	
+	public int updateProd(ProdVO prod);
 }
