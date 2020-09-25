@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-당신은 블라인드 처리 되었습니다. ^ㅜ^
-사유는???  ${reason }
+당신은 블라인드 처리 되었습니다.
+사유는???? ${reason }
 </body>
 </html>

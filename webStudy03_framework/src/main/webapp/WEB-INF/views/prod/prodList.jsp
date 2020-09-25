@@ -1,10 +1,6 @@
-<%@page import="kr.or.ddit.vo.BuyerVO"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="kr.or.ddit.vo.ProdVO"%>
-<%@page import="kr.or.ddit.vo.PagingVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,37 +9,26 @@
 <jsp:include page="/includee/preScript.jsp" />
 </head>
 <body>
-	<%
-		PagingVO<ProdVO> pagingVO = (PagingVO) request.getAttribute("pagingVO");
-	%>
-	<form id="searchForm" action="<%=request.getContextPath()%>/prod/prodList.do" class="form-inline">
-		<input type="hidden" name="page" /> 
-		<select class="form-control" name="prod_lgu">
-			<option value>상품분류</option>
-			<%
-				List<Map<String, Object>> lprodList = (List) request.getAttribute("lprodList");
-				for (Map<String, Object> lprod : lprodList) {
-			%>
-			<option value="<%=lprod.get("lprod_gu")%>"><%=lprod.get("lprod_nm")%></option>
-			<%
-				}
-			%>
-		</select> 
-		<select class="form-control" name="prod_buyer">
-			<option value>거래처</option>
-			<%
-				List<BuyerVO> buyerList = (List) request.getAttribute("buyerList");
-				for (BuyerVO buyer : buyerList) {
-			%>
-			<option value="<%=buyer.getBuyer_id()%>"><%=buyer.getBuyer_name()%></option>
-			<%
-				}
-			%>
-		</select> 
-		<input type="text" class="form-control" name="prod_name" /> 
-		<input type="submit" class="btn btn-primary" value="검색" />
-	</form>
-	<br>
+<form id="searchForm" action="${pageContext.request.contextPath }/prod/prodList.do" class="form-inline">
+	<input type="hidden" name="page" />
+	<select class="form-control mr-3" name="prod_lgu">
+		<option value>상품분류</option>
+		<c:forEach items="${lprodList }" var="lprod">
+			<option value="${lprod.lprod_gu }">${lprod["lprod_nm"] }</option>
+		</c:forEach>
+	</select>
+	<select class="form-control mr-3" name="prod_buyer">
+		<option value>거래처</option>
+		<c:forEach items="${buyerList }" var="buyer">
+			<option value="${buyer.buyer_id }" class="${buyer.buyer_lgu }">${buyer["buyer_name"] }</option>
+		</c:forEach>
+	</select>
+	<input type="text" name="prod_name" class="form-control mr-3" />
+	<input type="submit" class="btn btn-primary mr-3" value="검색" />
+	<input type="button" class="btn btn-secondary" value="상품등록" 
+		onclick="location.href='${pageContext.request.contextPath }/prod/prodInsert.do';"
+	/>
+</form>
 	<table id="prodTable" class="table table-bordered">
 		<thead>
 			<tr>
@@ -56,40 +41,59 @@
 			</tr>
 		</thead>
 		<tbody>
-			<%
-				List<ProdVO> datalist = pagingVO.getData();
-				if (datalist != null && datalist.size() > 0) {
-					for (ProdVO prod : datalist) {
-			%>
-			<tr>
-				<td><a href="<%=request.getContextPath() %>/prod/prodView.do?what=<%=prod.getProd_id() %>"><%=prod.getProd_name()%></a></td>
-				<td><%=prod.getLprod_nm()%></td>
-				<td><%=prod.getBuyer().getBuyer_name()%></td>
-				<td><%=prod.getProd_cost()%></td>
-				<td><%=prod.getProd_price()%></td>
-				<td><%=prod.getProd_sale()%></td>
-			</tr>
-			<%
-				}
-				} else {
-			%>
-			<tr>
-				<td colspan="6">검색 조건에 맞는 회원이 없음.</td>
-			</tr>
-			<%
-				}
-			%>
+		<c:set var="dataList" value="${pagingVO.data }" />
+		<c:choose>
+			<c:when test="${not empty dataList }">
+				<c:forEach items="${dataList }" var="prod">
+					<tr>
+						<c:url value="/prod/prodView.do" var="prodViewURL">
+							<c:param name="what" value="${prod.prod_id }" />
+						</c:url>
+						<td><a href="${prodViewURL }">${prod.prod_name }</a></td>
+						<td>${prod.lprod_nm }</td>
+						<td>${prod.buyer.buyer_name}</td>
+						<td>${prod.prod_cost }</td>
+						<td>${prod.prod_price }</td>
+						<td>${prod.prod_sale }</td>
+					</tr>
+				</c:forEach>
+			</c:when>
+			<c:otherwise>
+				<tr>
+					<td colspan="6">검색 조건에 맞는 상품 없음.</td>
+				</tr>
+			</c:otherwise>
+		</c:choose>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="6" id="pagingArea"><%=pagingVO.getPagingHTML_BS()%></td>
+				<td colspan="6" id="pagingArea">
+					${pagingVO.pagingHTML_BS }
+				</td>
 			</tr>
 		</tfoot>
 	</table>
-	<script type="text/javascript">
-	let listTable = $("#prodTable")
+
+<div class="modal fade" id="prodViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><span id="whatArea"></span>의 상세정보</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	let listTable = $("#prodTable");
 	let pagingArea = $("#pagingArea");
-	let searchForm = $("#searchForm");
 	let pagingA = pagingArea.on('click', "a" ,function(){
 		let page = $(this).data("page");
 		searchForm.find("[name='page']").val(page);
@@ -97,17 +101,11 @@
 		searchForm.find("[name='page']").val(1);
 		return false;
 	});
-	
-// 	$("#prodTable>tbody").on("click","a", function(){
-// 		let what = $(this).data("what"); 
-<%-- 		location.href="<%=request.getContextPath()%>/prod/prodView.do?what=" + what; --%>
-// 	});
-	
-	searchForm.on("submit", function(event){
+	let searchForm = $("#searchForm").on("submit", function(event){
 		event.preventDefault();
 		let url = this.action?this.action:location.href;
 		let method = this.method?this.method:"get";
-		let data = $(this).serialize(); // query string
+		let data = $(this).serialize(); // query string 
 		$.ajax({
 			url : url,
 			method : method,
@@ -123,23 +121,20 @@
 						trTags.push(
 							$("<tr>").append(
 								$("<td>").html(
-									$("<a>").text(prod.prod_name)
-											.attr("href", "<%=request.getContextPath()%>/prod/prodView.do?what="+prod.prod_id)
-											.data("what", prod.prod_id)
+										$("<a>").text(prod.prod_name)
+												.attr("href", "${pageContext.request.contextPath }/prod/prodView.do?what="+prod.prod_id)
 								),
 								$("<td>").text(prod.lprod_nm),
 								$("<td>").text(prod.buyer.buyer_name),
 								$("<td>").text(prod.prod_cost),
 								$("<td>").text(prod.prod_price),
 								$("<td>").text(prod.prod_sale)
-							
 							)
 						);
-						console.log(document.body);
 						
 					});
 				}else{
-					trTags.push($("<tr>").html($("<td colspan='6'>").text("조건에 맞는 회원이 없음.")));
+					trTags.push($("<tr>").html($("<td colspan='6'>").text("조건에 맞는 상품이 없음.")));
 				}
 				listTable.find("tbody").html(trTags);
 				pagingArea.html( resp.pagingHTML_BS );
@@ -149,6 +144,40 @@
 		});
 		return false;
 	});
-</script>
+	let prod_buyerTag = $("[name='prod_buyer']");
+	searchForm.find(":input").on("change", function(){
+		let name = this.name;
+		let lgu = $(this).val();
+		if(name=='prod_lgu'){
+			console.log(prod_buyerTag);
+			prod_buyerTag.find("option").hide();
+			prod_buyerTag.find("option:first").show();
+			prod_buyerTag.find("option."+lgu).show();
+		}
+		$(searchForm).submit();
+	});
+	
+<%--	$("#prodTable>tbody").on("click","a", function(){
+		let what = $(this).data("what"); 
+ 		location.href="${pageContext.request.contextPath }/Prod/ProdView.do?what="+what;
+		$.ajax({
+			url : "${pageContext.request.contextPath }/prod/prodView.do",
+			method : "get",
+			data : {
+				what:what
+			},
+			dataType : "html",
+			success : function(resp) {
+				$("#prodViewModal").find("#whatArea").text(what);
+				$("#prodViewModal").find(".modal-body").html(resp);
+				$("#prodViewModal").modal("show");
+			},
+			error : function(errResp) {
+				console.log(errResp);
+			}
+		});
+		return false;
+	});--%>
+</script>	
 </body>
 </html>

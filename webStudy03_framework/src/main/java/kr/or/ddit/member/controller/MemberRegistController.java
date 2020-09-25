@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.filter.wrapper.FileUploadRequestWrapper;
+import kr.or.ddit.filter.wrapper.PartWrapper;
 import kr.or.ddit.member.service.IMemberService;
 import kr.or.ddit.member.service.MemberServiceImpl;
 import kr.or.ddit.mvc.annotation.CommandHandler;
@@ -29,6 +31,10 @@ public class MemberRegistController {
 
 	@URIMapping(value="/registMember.do", method=HttpMethod.POST)
 	public String regist(@ModelData(name="member") MemberVO member, HttpServletRequest req) throws ServletException, IOException {
+		if(req instanceof FileUploadRequestWrapper) {
+			PartWrapper mem_image = ((FileUploadRequestWrapper) req).getPartWrapper("mem_image");
+			member.setMem_image(mem_image);
+		}
 //		2. 검증(DB 스키마 구조 참고)
 		Map<String, StringBuffer> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);

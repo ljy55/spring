@@ -19,13 +19,12 @@ import org.slf4j.LoggerFactory;
 public class BlindFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(BlindFilter.class);
 	private Map<String, String> blindMap;
-	
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		logger.info("{} 객체 생성 및 초기화 완료.", getClass().getName());
 		blindMap = new LinkedHashMap<>();
-		blindMap.put("192.168.41.22", "그냥 옆사람이라서");
-		
+		blindMap.put("192.168.41.2", "그냥 옆사람이라서");
 	}
 
 	@Override
@@ -48,23 +47,29 @@ public class BlindFilter implements Filter {
 			if(blindMap.containsKey(clientIp)) {
 				pass = false;
 				reason = blindMap.get(clientIp);
-			}			
+			}
 		}
 		
 		if(pass) {
 			chain.doFilter(request, response);
 		}else {
 			req.getSession().setAttribute("reason", reason);
-//			request.getRequestDispatcher(gopage).forward(request, response);
+//			request.getRequestDispatcher(goPage).forward(request, response);
 			resp.sendRedirect(req.getContextPath() + goPage);
 		}
-				
 	}
 
 	@Override
 	public void destroy() {
 		logger.info("{} 객체 소멸.", getClass().getName());
-		
 	}
 
 }
+
+
+
+
+
+
+
+

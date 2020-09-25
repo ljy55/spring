@@ -10,14 +10,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-public class CharacterEncodingFilter implements Filter {
+public class CharacterEncodingFilter implements Filter{
 
 	private String encoding;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		encoding = filterConfig.getInitParameter("encoding");
-		
 	}
 
 	@Override
@@ -25,8 +24,7 @@ public class CharacterEncodingFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		req.setCharacterEncoding(encoding);
-		chain.doFilter(request, response);
-		
+		chain.doFilter(request, response);		
 	}
 
 	@Override

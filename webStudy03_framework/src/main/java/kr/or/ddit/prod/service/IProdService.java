@@ -31,8 +31,8 @@ public interface IProdService {
 	 * @param pagingVO
 	 * @return
 	 */
-	
 	public int retrieveProdCount(PagingVO<ProdVO> pagingVO);
+	
 	/**
 	 * 검색 조건에 맞는 상품 목록
 	 * @param pagingVO
@@ -47,3 +47,23 @@ public interface IProdService {
 	 */
 	public ServiceResult modifyProd(ProdVO prod);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

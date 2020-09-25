@@ -20,13 +20,9 @@ public class MypageControllerServlet{
 	public String doGet(HttpSession session, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		MemberVO authMember = (MemberVO) session.getAttribute("authMember");
 		String goPage = null;
-//		if(authMember==null) {	필터에서 거르고 옴
-//			goPage = "redirect:/login/loginForm.jsp";
-//		}else {
-			MemberVO member = service.retrieveMember(authMember.getMem_id());
-			req.setAttribute("authMember", member);
-			goPage = "member/mypage";
-//		}
+		MemberVO member = service.retrieveMember(authMember.getMem_id());
+		req.setAttribute("authMember", member);
+		goPage = "member/mypage";
 		
 		return goPage;
 	}

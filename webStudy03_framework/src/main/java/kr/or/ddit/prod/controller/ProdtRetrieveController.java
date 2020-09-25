@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.ddit.mvc.annotation.CommandHandler;
-import kr.or.ddit.mvc.annotation.HttpMethod;
 import kr.or.ddit.mvc.annotation.URIMapping;
 import kr.or.ddit.mvc.annotation.resolvers.ModelData;
 import kr.or.ddit.mvc.annotation.resolvers.RequestParameter;
@@ -21,12 +20,15 @@ import kr.or.ddit.prod.dao.IOthersDAO;
 import kr.or.ddit.prod.dao.OthersDAOImpl;
 import kr.or.ddit.prod.service.IProdService;
 import kr.or.ddit.prod.service.ProdServiceImpl;
+import kr.or.ddit.vo.ProdVO;
 import kr.or.ddit.vo.PagingVO;
 import kr.or.ddit.vo.ProdVO;
+import kr.or.ddit.vo.SearchVO;
 
 @CommandHandler
-public class ProdRetrieveController{
+public class ProdtRetrieveController{
 	IProdService service = new ProdServiceImpl();
+	
 	IOthersDAO othersDAO = new OthersDAOImpl();
 	
 	public void addAttribute(HttpServletRequest req){
@@ -34,33 +36,27 @@ public class ProdRetrieveController{
 		req.setAttribute("buyerList", othersDAO.selectBuyerList());
 	}
 	
-	@URIMapping(value="/prod/prodView.do", method=HttpMethod.GET)
-	public String prod(@RequestParameter(name="what", required=true) String what, HttpServletRequest req) throws ServletException, IOException {
-		
-		ProdVO prod = service.retrieveProd(what);
-		req.setAttribute("prod", prod);
-		String goPage = "prod/prodView";
-		return goPage;
-	}
-	
-	@URIMapping(value="/prod/prodList.do", method=HttpMethod.GET)
+	@URIMapping("/prod/prodList.do")
 	public String list(
-			@RequestParameter(name="page", required=false, defaultValue="1") int currentPage,
-			@ModelData(name="searchDetail") ProdVO searchDetail,
-			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		====검색
+		@RequestParameter(name="page", required=false, defaultValue="1") int currentPage,
+		@ModelData(name="searchDetail") ProdVO searchDetail,
+		HttpServletRequest req, HttpServletResponse resp
+	) throws IOException{
 		addAttribute(req);
-		PagingVO<ProdVO> pagingVO = new PagingVO<>(10, 5);
+		PagingVO<ProdVO> pagingVO = new PagingVO<>();
+		// 검색 조건
+//		pagingVO.setSearchVO(new SearchVO(searchType, searchWord));
 		pagingVO.setSearchDetail(searchDetail);
-//		========
+		
 		int totalRecord = service.retrieveProdCount(pagingVO);
 		pagingVO.setTotalRecord(totalRecord); // totalPage
 		pagingVO.setCurrentPage(currentPage); // startRow, endRow, startPage, endPage
 		
-		List<ProdVO> prodList = service.retrieveProdList(pagingVO);
-		pagingVO.setData(prodList);
+		List<ProdVO> ProdList = service.retrieveProdList(pagingVO);
+		pagingVO.setData(ProdList);
 		
 		String accept = req.getHeader("Accept");
+		String goPage = null;
 		if(StringUtils.containsIgnoreCase(accept, "json")) {
 			resp.setContentType("application/json;charset=UTF-8");
 			ObjectMapper mapper = new ObjectMapper();
@@ -69,12 +65,11 @@ public class ProdRetrieveController{
 					){
 				mapper.writeValue(out, pagingVO);
 			}
-			return null;
 		}else {
 			req.setAttribute("pagingVO", pagingVO);
-			String goPage = "prod/prodList";
-			return goPage;
+			goPage = "prod/prodList";
 		}
+		return goPage;
 	}
 	
 	@URIMapping("/prod/prodView.do")

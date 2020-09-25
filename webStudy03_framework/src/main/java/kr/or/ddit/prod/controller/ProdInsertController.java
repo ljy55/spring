@@ -1,5 +1,6 @@
 package kr.or.ddit.prod.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import kr.or.ddit.enumpkg.ServiceResult;
+import kr.or.ddit.filter.wrapper.FileUploadRequestWrapper;
+import kr.or.ddit.filter.wrapper.PartWrapper;
 import kr.or.ddit.mvc.annotation.CommandHandler;
 import kr.or.ddit.mvc.annotation.HttpMethod;
 import kr.or.ddit.mvc.annotation.URIMapping;
@@ -38,6 +41,15 @@ public class ProdInsertController{
 	
 	@URIMapping(value="/prod/prodInsert.do", method=HttpMethod.POST)
 	public String doPost(@ModelData(name="prod")ProdVO prod, HttpServletRequest req) throws ServletException, IOException {
+		addAttribute(req);
+		// 검증 전에 prod_img 결정
+		if(req instanceof FileUploadRequestWrapper) {
+			PartWrapper imageFile = ((FileUploadRequestWrapper) req).getPartWrapper("prod_image");
+			if(imageFile!=null) {
+				prod.setProd_image(imageFile);
+			}
+		}
+		
 //		2. 검증(DB 스키마 구조 참고)
 		Map<String, StringBuffer> errors = new LinkedHashMap<>();
 		req.setAttribute("errors", errors);

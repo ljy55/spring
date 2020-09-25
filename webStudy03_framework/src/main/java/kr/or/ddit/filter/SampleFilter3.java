@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SampleFilter3 implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(SampleFilter3.class);
-	
+
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		logger.info("{} 객체 생성 및 초기화 완료.", getClass().getName());
@@ -30,20 +30,28 @@ public class SampleFilter3 implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		//요청 전처리
+		// 요청 전처리
 		HttpServletRequest req = (HttpServletRequest) request;
 		logger.info("{} 요청 전처리3", req.getRequestURI());
-		chain.doFilter(request, response); //다음 필터나 최종 자원 쪽으로 제어가 이동
-		//응답 후처리
+		chain.doFilter(request, response); // 다음 필터나 최종 자원 쪽으로 제어가 이동.
 		HttpServletResponse resp = (HttpServletResponse) response;
-		logger.info("응답 후처리3, 남은 버퍼의 용량 {}", resp.getBufferSize());
-		
+		// 응답 후처리
+		logger.info("응답 후처리3, 버퍼의 용량 {}", resp.getBufferSize());
 	}
 
 	@Override
 	public void destroy() {
 		logger.info("{} 객체 소멸.", getClass().getName());
-		
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

@@ -13,13 +13,19 @@ import org.apache.commons.io.FileUtils;
 public class PartWrapper implements Part{
 	public PartWrapper(Part part) {
 		this.part = part;
-		
+		this.originalFilename = parseOriginalFilename(part);
+		saveName = UUID.randomUUID().toString();
+	}
+	private String parseOriginalFilename(Part part2) {
 		String headerValue = part.getHeader("Content-Disposition");
 		int index = headerValue.indexOf("filename");
-		index = headerValue.indexOf("=", index);
-		headerValue = headerValue.substring(index+1);
-		originalFilename = headerValue.replace("\"", ""); //원본 파일명
-		saveName = UUID.randomUUID().toString();
+		String originalFilename = null;
+		if(index!=-1) {
+			index = headerValue.indexOf("=", index);
+			headerValue = headerValue.substring(index+1);
+			originalFilename = headerValue.replace("\"", ""); // 원본파일명
+		}
+		return originalFilename;
 	}
 	private Part part;
 	
@@ -28,7 +34,7 @@ public class PartWrapper implements Part{
 		return originalFilename;
 	}
 	
-	private String saveName; //저장명
+	private String saveName;
 	public String getSaveName() {
 		return saveName;
 	}
@@ -36,13 +42,11 @@ public class PartWrapper implements Part{
 	public void saveToRealPath(File folder) throws IOException {
 		File saveFile = new File(folder, saveName);
 		try(
-		 	InputStream is =  getInputStream();
+			InputStream is = getInputStream();	
 		){
 			FileUtils.copyInputStreamToFile(is, saveFile);
 		}
 	}
-
-
 
 	@Override
 	public InputStream getInputStream() throws IOException {
@@ -74,11 +78,11 @@ public class PartWrapper implements Part{
 
 	@Override
 	public void write(String fileName) throws IOException {
-		
+		part.write(fileName);
 	}
 
 
-	
+
 	@Override
 	public void delete() throws IOException {
 		part.delete();
@@ -105,3 +109,18 @@ public class PartWrapper implements Part{
 		return part.getHeaderNames();
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
