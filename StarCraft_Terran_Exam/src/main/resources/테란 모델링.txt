@@ -1,0 +1,32 @@
+테란 보병 양성소
+지정한 수만큼 지정한 타입으로 보병을 훈련 및 생산
+
+테란 유닛 모델링
+
+마린(Marine)  : 시속 10km 로 이동하면서 라이플총으로 공격
+메딕(Medic) : 시속 3km 로 이동하면서 주사기로 공격
+불곰(Firebat) : 시속 2km로 이동하면서 화염방사기로 공격
+고스트(Ghost)  : 시속 5km 로 이동하면서 핵무기로 공격
+
+보병 유닛의 공통점 - 이동 , 다양한 무기를 가지고, 공격
+
+FootSoldier <<abstract>>
+walking
+withWeapon
+attack : walking() 동시에 withWeapon()을 사용하여 공격행위 완성.
+
+
+Weapon 의 구현체들===============================
+
+RifleGun : damage 30
+InjectorWeapon : damage 10
+FlameThrower : damage 70
+NuclearWeapon : damage 1000
+
+
+무기의 공통점 상해를 입힐수 있다, damage
+
+Weapon <<interface>> : +damage
+
+===============================
+ 
