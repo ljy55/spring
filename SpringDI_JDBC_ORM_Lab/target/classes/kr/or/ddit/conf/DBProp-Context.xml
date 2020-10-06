@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	
+	<util:properties id="dbInfo" location="classpath:/kr/or/ddit/dbInfo.properties">
+		<prop key="newProp">newValue</prop>
+	</util:properties>
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" 
+		p:driverClassName="#{dbInfo.driverClassName}"
+		p:url="#{dbInfo['url']}"
+		p:username="#{dbInfo.user}"
+		p:password="#{dbInfo.password}"
+	/>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" 
+		p:dataSource-ref="dataSource"
+	/>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="dataSource"
+		p:typeAliasesPackage="kr.or.ddit.vo"
+		p:mapperLocations="classpath:/kr/or/ddit/mybatis/mappers/*.xml"
+	/>
+	
+	<mybatis-spring:scan base-package="kr.or.ddit.prop.dao"
+		annotation="org.springframework.stereotype.Repository"
+	/>
+	
+	<context:annotation-config/>
+<!-- 	<bean id="dao_JDBC" class="kr.or.ddit.prop.dao.DataBasePropertyDAO_JDBC"></bean> -->
+<!-- 	<bean id="dao_mybatis" class="kr.or.ddit.prop.dao.DataBasePropertyDAO_Mybatis"></bean> -->
+	<bean id="dbPropService" class="kr.or.ddit.prop.service.DataBasePropertyServiceImpl"></bean>
+</beans>

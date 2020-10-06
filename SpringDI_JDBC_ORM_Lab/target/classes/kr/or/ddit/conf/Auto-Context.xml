@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- 특정 영역에 있는 클래스를 자동으로 빈등록 -->
+<!-- 	1. @Component : commons -->
+<!-- 	2. @Repository : Persistence layer -->
+<!-- 	3. @Service : Business logic layer -->
+<!-- 	4. @Controller : Controller layer -->
+<!-- 	5. @RestController : Controller layer -->
+<!-- 	6. @ControllerAdvice : controller 를 대상으로 weaving 되는 advice에 사용 -->
+<!-- 	7. @RestControllerAdvice : REST controller 를 대상으로 weaving 되는 advice에 사용 -->
+
+	빈들간의 의존관계 형성
+	1. @AutoWired : type을 기준으로 컨테이너가 주입.
+	2. @Resource : 주입할 대상을 검색할 기준을 명시적으로 결정할 수 있음.
+	3. @Inject : @AutoWired 와 동일(프레임워크에 대한 종속성이 없음)
+<bean id="baz2" class="kr.or.ddit.desc.Baz"></bean>
+	<context:component-scan base-package="kr.or.ddit.desc" use-default-filters="true">
+<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/> -->
+<!-- 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/> -->
+<!-- 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/> -->
+<!-- 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/> -->
+	</context:component-scan>
+</beans>
