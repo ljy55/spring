@@ -1,27 +1,47 @@
 package kr.or.ddit.terran.building;
 
+import javax.inject.Inject;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Repository;
+
 import kr.or.ddit.terran.unit.Firebat;
 import kr.or.ddit.terran.unit.FootSoldier;
 import kr.or.ddit.terran.unit.Ghost;
 import kr.or.ddit.terran.unit.Marine;
 import kr.or.ddit.terran.unit.Medic;
 
+@Repository
 public class Barrack implements Trainnable {
+	ApplicationContext context;
+	
+	@Inject
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+		String[] names = applicationContext.getBeanDefinitionNames();
+		for(String name :  names) {
+			System.err.println(name);
+		}
+		
+	}
+	
 	@Override
 	public FootSoldier traningSoldier(SoldierType type){
 		FootSoldier soldier = null;
 		switch (type) {
 		case MARINE:
-			soldier = new Marine();
+			soldier = context.getBean(Marine.class);
 			break;
 		case FIERBAT:
-			soldier = new Firebat();
+			soldier = context.getBean(Firebat.class);
 			break;
 		case MEDIC:
-			soldier = new Medic();
+			soldier = context.getBean(Medic.class);
 			break;
 		case GHOST:
-			soldier = new Ghost();
+			soldier = context.getBean(Ghost.class);
 			break;
 		}
 		return soldier;
@@ -50,5 +70,6 @@ public class Barrack implements Trainnable {
 	public FootSoldier[]  generateMedic(int num){
 		return traningSoldiers(SoldierType.MEDIC, num);
 	}
+	
 	
 }

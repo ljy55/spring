@@ -1,9 +1,20 @@
 package kr.or.ddit.terran.unit;
 
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Component;
+
 import kr.or.ddit.terran.tool.NuclearWeapon;
 
+@Component
 public class Ghost extends FootSoldier {
-	NuclearWeapon weapon = new NuclearWeapon();
+	NuclearWeapon weapon;
+	
+	@Inject
+	public Ghost(NuclearWeapon weapon) {
+		super();
+		this.weapon = weapon;
+	}
 
 	@Override
 	public String walking() {

@@ -1,5 +1,8 @@
 package kr.or.ddit.terran.tool;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class InjectorWeapon implements Weapon {
 	
 	@Override
