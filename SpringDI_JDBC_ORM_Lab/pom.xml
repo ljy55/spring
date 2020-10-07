@@ -29,6 +29,11 @@
       </plugins>
    </build>
    <dependencies>
+   	  <dependency>
+         <groupId>javax.inject</groupId>
+         <artifactId>javax.inject</artifactId>
+         <version>1</version>
+      </dependency>
       <dependency>
          <groupId>org.springframework</groupId>
          <artifactId>spring-context</artifactId>
@@ -76,11 +81,6 @@
          <groupId>org.lazyluke</groupId>
          <artifactId>log4jdbc-remix</artifactId>
          <version>0.2.7</version>
-      </dependency>
-      <dependency>
-         <groupId>javax.inject</groupId>
-         <artifactId>javax.inject</artifactId>
-         <version>1</version>
       </dependency>
       <!-- DataBase connection library -->
       <dependency>

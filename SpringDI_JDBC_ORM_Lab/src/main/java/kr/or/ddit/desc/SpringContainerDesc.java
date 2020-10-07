@@ -15,7 +15,7 @@ import kr.or.ddit.service.SampleServiceImpl;
  * 4. 등록된 빈들간의 의존관계 형성
  * 	1) 생성자 주입(constructor injection, 필수전략 주입시) : constructor-arg, c 
  * 	2) setter injection(optional 전략 주입시) : property, p 
- * 5. entry point 에서 컨테이너 객체 생성
+ * 5. entry point 에서 컨테이너 객체 생성-초기화
  * 6. 컨테이너 내의 객체(bean)을 주입받아 사용(getBean)
  * 
  * Spring DI Container 의 빈 관리 특성
@@ -24,7 +24,7 @@ import kr.or.ddit.service.SampleServiceImpl;
  * 		- prototype : 주입시마다 새로운 객체 생성
  * 		- request/session(web)
  * 2. 특별한 설정(lazy-init, @Lazy)이 없는 한, 컨테이너가 초기화될때 모든 빈의 객체가 생성됨.
- * 		- lazy-init 설정으로 객체의 생성 시점을 주입 전으로 미뤄놓을 수 있음.
+ * 		- lazy-init(@Lazy) 설정으로 객체의 생성 시점을 주입 전으로 미뤄놓을 수 있음.
  * 3. 직접적인 객체 생성 순서 제어 : depends-on(@DependsOn)
  * 4. 컨테이너에 의해 관리되는 빈의 생명주기 콜백 지정 : init-method(@PostConstruct), destroy-method(@PreDestroy)
  * 

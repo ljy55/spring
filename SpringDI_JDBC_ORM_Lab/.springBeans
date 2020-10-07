@@ -12,6 +12,7 @@
 		<config>src/main/resources/kr/or/ddit/conf/Auto-Context.xml</config>
 		<config>src/main/resources/kr/or/ddit/conf/Sample_Auto-Context.xml</config>
 		<config>src/main/resources/kr/or/ddit/conf/DBProp-Context.xml</config>
+		<config>src/main/resources/kr/or/ddit/conf/resourceloader/Resource-Context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>
